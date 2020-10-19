@@ -1,37 +1,100 @@
 import React from 'react';
-import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import Chart from '../components/Chart';
-import Deposits from '../components/Deposits';
-import HomeCalendar from './HomeCalendar';
+import "react-big-calendar/lib/css/react-big-calendar.css";
+import { Calendar, dateFnsLocalizer, Event } from 'react-big-calendar'
+import {
+  format,
+  parse,
+  startOfWeek,
+  getDay,
+  addHours,
+  setMinutes,
+  setSeconds,
+  setHours,
+  parseISO,
+ } from 'date-fns';
 
-const useStyles = makeStyles((theme) => ({
-  container: {
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4),
-  },
-  paper: {
-    padding: theme.spacing(2),
-    display: 'flex',
-    overflow: 'auto',
-    flexDirection: 'column',
-  },
-  fixedHeight: {
-    height: 240,
-  },
-}));
+const locales = {
+  'en-US': require('date-fns/locale/en-US'),
+};
+const localizer = dateFnsLocalizer({
+  format,
+  parse,
+  startOfWeek,
+  getDay,
+  locales,
+});
 
-export default function Home() {
-  const classes = useStyles();
+interface Dinner {
+  date: string;
+  name: string;
+}
 
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+interface DinnerEvent extends Event {
+  color: string;
+}
 
+function dinnerEvent(dinner: Dinner): DinnerEvent {
+  const date = parseISO(dinner.date);
+  const dinnerStart = setHours(setMinutes(setSeconds(date, 0), 0), 18);
+  const dinnerEnd = addHours(dinnerStart, 1)
+  return {
+    title: dinner.name,
+    start: dinnerStart,
+    end: dinnerEnd,
+    color: 'green'
+  }
+}
+
+function Home() {
+  const dinners: Dinner[] = [
+    {
+      name: 'Chicken & Squash & Mushrooms',
+      date: '2020-10-18',
+    },
+    {
+      name: 'Eggplant Parmesan',
+      date: '2020-10-19',
+    },
+    {
+      name: 'Buddha Bowls',
+      date: '2020-10-20',
+    },
+    {
+      name: 'Smoked Chicken Wings',
+      date: '2020-10-21',
+    },
+    {
+      name: 'Garlic Tofu & Broccoli',
+      date: '2020-10-22',
+    },
+    {
+      name: 'Take-Out',
+      date: '2020-10-23',
+    },
+  ];
+
+  const events = dinners.map(dinnerEvent);
+  console.log(events);
   return (
-    <>
-      <HomeCalendar/>
-    </>
+    <div style={{padding: 25}}>
+    <h1>Calendar</h1>
+    <Calendar
+      localizer={localizer}
+      views={{
+        month: true,
+      }}
+      events={events}
+      eventPropGetter={event => ({
+        style: {
+          backgroundColor: event.color,
+        }
+      })}
+      startAccessor="start"
+      endAccessor="end"
+      style={{ height: 768}}
+    />
+    </div>
   );
 }
+
+export default Home;

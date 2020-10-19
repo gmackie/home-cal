@@ -14,20 +14,22 @@ import Box from '@material-ui/core/Box';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { CssBaseline } from '@material-ui/core';
 import theme from './theme';
-import HomeCalendar from './pages/HomeCalendar';
+import MealsPage from './pages/MealsPage';
+import { MealsContextProvider } from './contexts/MealsContext';
 
 export default function App() {
   const title = 'Home Calendar'
   return (
     <SnackbarProvider maxSnack={3}>
+      <MealsContextProvider>
         <ThemeProvider theme={theme}>
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
           <CssBaseline />
           <Router>
             <SideBarLayout title={title}>
               <Switch>
-                <Route path="/calendar">
-                  <HomeCalendar />
+                <Route path="/meals">
+                  <MealsPage />
                 </Route>
                 <Route path="/pricing">
                   <Pricing title="Tasks. Gameified." copy="do things. get points. feel good. now you really want to buy."/>
@@ -42,6 +44,7 @@ export default function App() {
             </SideBarLayout>
           </Router>
         </ThemeProvider>
+      </MealsContextProvider>
     </SnackbarProvider>
   );
 }

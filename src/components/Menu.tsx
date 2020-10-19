@@ -56,7 +56,7 @@ export default function Menu(props: MenuProps) {
     {
       icon: 'calendar_today',
       text: "Calendar",
-      url: "/calendar",
+      url: "/",
     },
     {
       icon: 'restaurant',
@@ -64,19 +64,9 @@ export default function Menu(props: MenuProps) {
       url: "/meals",
     },
     {
-      icon: 'assignment_turned_in',
-      text: "Tasks",
-      url: "/tasks",
-    },
-    {
       icon: 'event_available',
-      text: "Todos",
-      url: "/todos",
-    },
-    {
-      icon: 'local_offer',
-      text: "Labels",
-      url: "/labels",
+      text: "Meal Calendar Setup",
+      url: "/meal-calendar",
     },
   ];
   const bottomItems: MenuItemProps[] = [
