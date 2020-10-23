@@ -1,10 +1,10 @@
 export enum ProteinType {
-  CHICKEN,
-  BEEF,
-  FISH,
-  SEAFOOD,
-  TOFU,
-  VEGETABLE,
+  CHICKEN = 'Chicken',
+  BEEF = 'Beef',
+  FISH = 'Fish',
+  SEAFOOD = 'Seafood',
+  TOFU = 'Tofu',
+  VEGETABLE = 'Vegetable',
 }
 
 export interface Meal {

@@ -25,14 +25,14 @@ export default function MealsTable(props: MealTableProps) {
   } = props;
   interface ProteinTypeSelectorProps {
     value: ProteinType;
-    onChange(event: ChangeEvent<{ name?: string | undefined; value: unknown; }>, child: ReactNode): void;
+    onChange(value: ProteinType): void;
   }
   const ProteinTypeSelector = (props: ProteinTypeSelectorProps) => {
     const {value, onChange} = props;
     return (
       <Select
         value={value}
-        onChange={onChange}
+        onChange={e => onChange(e.target.value as ProteinType)}
       >
         {
           Object.keys(ProteinType).map((proteinType, index) => 
@@ -60,7 +60,7 @@ export default function MealsTable(props: MealTableProps) {
   ];
 
   return (
-    <MaterialTable
+    <MaterialTable<Meal>
       title="Meals"
       columns={columns}
       data={data}

@@ -14,38 +14,41 @@ interface MealsContext extends MealsData {
   setMealCalendars: Dispatch<MealCalendar[] | null>;
 }
 
+const localData = localStorage.getItem('meals-context') || '{}';
+const localState: MealsData = JSON.parse(localData);
+console.log(JSON.stringify({localState}))
 const initialState: MealsContext = {
-  meals: null,
+  ...localState,
   setMeals: (meals: Meal[] | null) => {},
-  mealCalendars: null,
   setMealCalendars: (mealCalendars: MealCalendar[] | null) => {},
 };
 const MealsContext = createContext<MealsContext>(initialState);
 function MealsContextProvider(props: MealsContextProviderProps) {
   const { children } = props;
-  const [mealContext, setMealContext] = useState<MealsData>();
+  const [mealData, setMealData] = useState<MealsData>(initialState);
   const setMeals = (meals: Meal[] | null) => {
-    setMealContext({
-      ...mealContext,
+    setMealData({
+      ...mealData,
       meals
     });
   };
   const setMealCalendars = (mealCalendars: MealCalendar[] | null) => {
-    setMealContext({
-      ...mealContext,
+    setMealData({
+      ...mealData,
       mealCalendars
     });
   };
 
   useEffect(() => {
-    if (!mealContext) {
+    if (!mealData) {
       return;
     }
-    const data = JSON.stringify(mealContext);
-    localStorage.setItem("todo-points-auth", data);
-  }, [mealContext]);
-  const meals = mealContext ? mealContext.meals : [];
-  const mealCalendars = mealContext ? mealContext.mealCalendars : [];
+    const data = JSON.stringify(mealData);
+    localStorage.setItem("meals-context", data);
+  }, [mealData]);
+  console.log(JSON.stringify({mealData}));
+  const meals = mealData ? mealData.meals : [];
+  const mealCalendars = mealData ? mealData.mealCalendars : [];
   const value: MealsContext = {
     meals,
     setMeals,
@@ -67,9 +70,11 @@ function useSetMeals(): Dispatch<Meal[] | null> {
 function useMeals() : Meal[] {
   const { meals } = useContext(MealsContext);
   if (!meals) {
+    console.log('meals was null');
     return [];
   }
-  return [];
+  console.log(JSON.stringify(meals))
+  return meals;
 }
 
 function useSetMealCalendars(): Dispatch<MealCalendar[] | null> {

@@ -5,15 +5,13 @@ import { Meal } from '../types';
 
 function MealsPage() {
   const meals = useMeals();
-  console.log(JSON.stringify(meals));
+  console.log(JSON.stringify({meals}));
   const setMeals = useSetMeals();
   const onRowAdd = (meal: Meal) => {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve();
-        const newMeals = [...meals];
-        newMeals.push(meal);
-        console.log(JSON.stringify(newMeals));
+        const newMeals = meals.concat(meal);
         setMeals(newMeals);
       }, 600);
     });
